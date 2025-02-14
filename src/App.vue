@@ -10,10 +10,9 @@
 </template>
 <script setup>
 import { Toaster } from '@/components/ui/toast'
-import { KeepAlive } from 'vue';
 import  sidebar from '@/components/sidebar.vue'
 import Header from './components/Header.vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useUser } from '@/utils/pinia'
 import { onMounted, ref } from 'vue';
 import { success } from '@/utils/message'
@@ -24,6 +23,7 @@ const fromUser = user.getUser().id;
 let ws = null;
 const open = ref(true)
 const route = useRoute()
+const router = useRouter()
 const msg = {
   method:3,
   data:{
@@ -35,6 +35,7 @@ onMounted(()=>{
   document.title = "小碳二手交易平台"
   ws = new WebSocket(import.meta.env.VITE_APP_WS+`/chat/${fromUser}`)
   ws.onmessage = onmessage;
+  
 })
 
 

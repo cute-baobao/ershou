@@ -50,7 +50,7 @@ onMounted(() => {
   }
 })
 const goToHome = () => {
-  router.push('/')
+  router.push('/index')
 }
 
 const viewOrder = () => {

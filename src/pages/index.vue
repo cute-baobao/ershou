@@ -6,7 +6,7 @@
       <!-- 头部 -->
       <section class="text-center mb-2">
         <!-- <h1 class="text-2xl font-bold mb-4 text-gray-800 dark:text-gray-100"></h1> -->
-        <h2 class="text-5xl font-bold mb-6 text-main">共建绿色低碳生活</h2>
+        <h2 class="text-5xl font-bold mb-6 text-main">共筑绿意未来</h2>
         <p class="text-xl text-gray-600 dark:text-gray-300 mb-10">通过二手交易，我们共同为环保事业贡献力量，创造可持续的未来</p>
         <div class="flex justify-center mb-6">
           <div class="relative w-full max-w-xl">

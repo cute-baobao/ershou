@@ -160,7 +160,7 @@ const emits = defineEmits(['close'])
 
 onMounted(() => {
     if (!route.query.id) {
-        // router.push({ path: '/' })
+        router.push({ path: '/404' })
     } else {
         id.value = Number(route.query.id)
         loadProduct()
@@ -179,7 +179,7 @@ const getAddressList = async () => {
 
 const loadProduct = async () => {
     if (id.value === -1)
-        router.push({ path: '/' })
+        router.push({ path: '/index' })
     await api({
         url: '/user/pointsProduct/detail',
         method: 'GET',

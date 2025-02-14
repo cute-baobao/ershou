@@ -58,7 +58,7 @@
                 <p class="text-xs text-green-600 dark:text-green-400">点击查看详情</p>
               </CardContent>
             </Card>
-            <Card @click="router.push('/pointStore')" class="cursor-pointer bg-white dark:bg-slate-900 shadow-md  cursor-pointer hover:bg-gray-100 hover:dark:bg-gray-700 transition-colors duration-200">
+            <Card @click="router.push('/pointStore')" class="bg-white dark:bg-slate-900 shadow-md  cursor-pointer hover:bg-gray-100 hover:dark:bg-gray-700 transition-colors duration-200">
               <CardHeader class="flex flex-row items-center justify-between pb-2">
                 <CardTitle class="text-sm font-medium">积分商城</CardTitle>
                 <Award class="h-4 w-4 text-green-600 dark:text-green-400" />

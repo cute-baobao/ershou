@@ -54,7 +54,7 @@
                 </span>
               </Button>
               <div class="text-center text-sm">
-                <div @click="router.push({path:'/'})" class="text-green-600 hover:underline dark:text-green-400 cursor-pointer">
+                <div @click="router.push({path:'/index'})" class="text-green-600 hover:underline dark:text-green-400 cursor-pointer">
                   返回首页
                 </div>
               </div>
@@ -212,7 +212,7 @@ const login = async () => {
       success("登录成功，点击头像探索更多功能")
       user.setUser(res.data)
       token.setToken(res.data.token)
-      router.push('/')
+      router.push('/index')
     }
   }).finally(() => {
     request.value = false

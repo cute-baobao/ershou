@@ -264,7 +264,7 @@ const emits = defineEmits(['close'])
 onMounted(() => {
   window.scrollTo(0, 0)
   if (!route.query.id) {
-    // router.push({ path: '/' })
+    router.push({ path: '/404' })
   } else {
     id.value = Number(route.query.id)
     loadProduct()

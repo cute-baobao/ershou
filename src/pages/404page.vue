@@ -27,6 +27,6 @@ const router = useRouter()
  * @param {string} path
  */
 const goToHome = () => {
-  router.push('/')
+  router.push('/index')
 }
 </script>

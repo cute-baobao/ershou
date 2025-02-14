@@ -194,7 +194,7 @@ onMounted(() => {
 const loadProduct = async () => {
     isloading.value = true
     if (id.value === -1)
-        router.push({ path: '/' })
+        router.push({ path: '/index' })
     await api({
         url: '/user/order/detail',
         method: 'POST',

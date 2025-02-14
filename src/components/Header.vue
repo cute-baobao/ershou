@@ -2,7 +2,7 @@
   <header class="bg-gradient-to-r from-green-300 to-green-400 dark:from-slate-800 dark:to-slate-800 text-gray-800 dark:text-white shadow-lg transition-colors duration-300">
     <div class="container mx-auto px-4 py-3">
       <div class="flex justify-between items-center">
-        <router-link to="/" class="flex items-center space-x-2 hover:opacity-80 transition-opacity duration-200">
+        <router-link to="/index" class="flex items-center space-x-2 hover:opacity-80 transition-opacity duration-200">
           <img src="@/assets/yezi.svg" class="h-10 w-7" alt="Logo" />
           <span class="text-xl font-bold">小碳</span>
         </router-link>
@@ -46,9 +46,10 @@ import changeMode from './changeMode.vue';
 const route = useRoute();
 
 const navItems = ref([
-  { name: '首页', path: '/' },
+  { name: '首页', path: '/index' },
   { name: '分类', path: '/more' },
   { name: '订单', path: '/orderCenter' },
+  { name: '小碳论坛', path: '/posts' },
   { name: '卖家中心', path: '/sellerOrder' },
   { name: '积分商城', path: '/pointStore' },
   { name: '碳足迹计算', path: '/carbonComputed' },

@@ -227,7 +227,10 @@ const product = ref({
 onMounted(async () => {
   if (route.query.productId) {
     id.value = Number(route.query.productId)
-    await loadProduct()
+    await loadProduct().catch(err => {
+        router.push({ path: '/404' })
+    })
+    
     if (product.value.status === 2) {
       router.push("/fail")
     }

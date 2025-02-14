@@ -9,7 +9,7 @@ const router = createRouter({
     routes: [
         {
             //路径
-            path: '/',
+            path: '/index',
             //路由组件
             component: () => import('../pages/index.vue'),
         },
@@ -115,7 +115,7 @@ const router = createRouter({
             component: () => import('../pages/fail.vue'),
         },
         {
-            path: '/test',
+            path: '/',
             component: () => import('../pages/test.vue'),
         },
         {

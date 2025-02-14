@@ -43,6 +43,6 @@ onMounted(() => {
   remark.value = route.query.remark
 })
 const goToHome = () => {
-  router.push('/')
+  router.push('/index')
 }
 </script>

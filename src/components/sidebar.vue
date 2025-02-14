@@ -39,7 +39,7 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const bar = ref([
-  { icon: House, text: "首页", to: "/" },
+  { icon: House, text: "首页", to: "/index" },
   { icon: Plus, text: "发布", to: "/write" },
   { icon: MessageCircleMore, text: "消息", to: "/chat" }
 ]);
