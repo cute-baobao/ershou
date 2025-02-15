@@ -1,8 +1,10 @@
 <script setup>
+import CommentArea from "./CommentArea.vue";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Icon } from "@iconify/vue/dist/iconify.js";
 import { ref } from "vue";
 
+const commentArea = ref()
 const imgList = ref([
     "/1.jpg",
     "/2.jpg",
@@ -17,7 +19,7 @@ const imgList = ref([
 </script>
 
 <template>
-  <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm overflow-hidden">
+  <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm overflow-hidden relative">
     <div class="flex items-center justify-between p-4 border-b border-slate-100 dark:border-slate-700">
       <div class="flex items-center gap-3">
         <Avatar class="h-10 w-10">
@@ -67,10 +69,11 @@ const imgList = ref([
         <Icon icon="ri:thumb-up-line" class="w-5 h-5 text-gray-500 dark:text-gray-400" />
         <span class="text-sm text-gray-600 dark:text-gray-300">点赞</span>
       </button>
-      <button class="flex items-center gap-2 px-4 py-2 rounded-full hover:bg-slate-50 dark:hover:bg-slate-700">
+      <button @click="commentArea.toggleComments()"  class="flex items-center gap-2 px-4 py-2 rounded-full hover:bg-slate-50 dark:hover:bg-slate-700">
         <Icon icon="mdi:comment-outline" class="w-5 h-5 text-gray-500 dark:text-gray-400" />
         <span class="text-sm text-gray-600 dark:text-gray-300">评论</span>
       </button>
     </div>
+    <CommentArea ref="commentArea"/>
   </div>
 </template>

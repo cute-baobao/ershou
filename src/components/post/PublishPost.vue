@@ -1,8 +1,8 @@
 <script setup>
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
-import { ref, computed } from 'vue'
 import { Icon } from '@iconify/vue/dist/iconify.js';
+import { ref, computed } from 'vue'
 
 const content = ref('')
 
@@ -13,9 +13,6 @@ const wordCount = computed(() => {
 const toolbarButtons = [
   { icon: 'mdi:emoticon-outline', label: '表情' },
   { icon: 'mdi:image-outline', label: '图片' },
-  { icon: 'mdi:at', label: '@用户' },
-  { icon: 'mdi:chart-bar', label: '数据' },
-  { icon: 'mdi:gift-outline', label: '礼物' },
 ]
 </script>
 
@@ -36,15 +33,13 @@ const toolbarButtons = [
           size="sm"
           class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 rounded-full"
         >
+          <EmojiPicker></EmojiPicker>
           <Icon :icon="btn.icon" class="w-5 h-5" />
         </Button>
       </div>
 
       <div class="flex items-center gap-3">
         <span class="text-sm text-gray-400 dark:text-gray-500">{{ wordCount }}</span>
-        <Button variant="ghost" size="sm" class="text-gray-500 dark:text-gray-400 rounded-full">
-          <Icon icon="mdi:video-outline" class="w-5 h-5" />
-        </Button>
         <Button class="bg-blue-500 hover:bg-blue-600 text-white px-6 dark:bg-blue-600 dark:hover:bg-blue-700">
           发布
         </Button>
