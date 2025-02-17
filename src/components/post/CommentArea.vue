@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, nextTick } from "vue";
+import { ref, nextTick, watch } from "vue";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Icon } from "@iconify/vue/dist/iconify.js";
@@ -11,6 +11,12 @@ const commentSectionHeight = ref('0px')
 
 const commentCount = 10 // 这里应该是一个动态值，根据实际评论数量来设置
 
+const props = defineProps({
+    id: {
+        type: Number,
+        required: true
+    }
+})
 const toggleComments = () => {
     isExpanded.value = !isExpanded.value
     if (isExpanded.value) {
@@ -29,6 +35,9 @@ const submitComment = () => {
     comment.value = "" // 清空输入框
 }
 
+watch(isExpanded, (newValue) => {
+    console.log(newValue)
+})
 defineExpose({ toggleComments })
 </script>
 

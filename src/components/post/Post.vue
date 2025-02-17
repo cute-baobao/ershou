@@ -1,79 +1,138 @@
-<script setup>
+<script setup lang="ts">
 import CommentArea from "./CommentArea.vue";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Icon } from "@iconify/vue/dist/iconify.js";
-import { ref } from "vue";
+import Button from "../ui/button/Button.vue";
 
-const commentArea = ref()
-const imgList = ref([
-    "/1.jpg",
-    "/2.jpg",
-    "/1.jpg",
-    "/2.jpg",
-    "/1.jpg",
-    "/2.jpg",
-    "/1.jpg",
-    "/2.jpg",
-    "/1.jpg",
-]);
+import { PropType } from "vue";
+import { ref } from "vue";
+import api from "@/utils/api.js"
+
+const commentArea = ref();
+const props = defineProps({
+    post: {
+        type: Object as PropType<{
+            avatar: string;
+            content: string;
+            images: string[];
+            createTime: string;
+            id: number;
+            likeNum: number;
+            liked: boolean;
+            userId: number;
+            username: string;
+            canBeDeleted: boolean;
+        }>,
+        require:true
+    },
+});
+
+const toggleLike = () => {
+    props.post!.liked = !props.post!.liked
+    if(props.post!.liked) {
+      api.put(`/user/post/like?id=${props.post?.id}`).then((res:any)=>{
+          if(res.code === 1) {
+            console.log(res)
+            props.post!.likeNum += 1
+          }
+      })
+    }else {
+      api.put(`/user/post/cancelLike?id=${props.post?.id}`,{
+        id:props.post!.id
+      }).then((res:any)=>{
+          if(res.code === 1) {
+            console.log(res)
+            props.post!.likeNum -= 1
+          }
+      })
+    }
+}
 </script>
 
 <template>
-  <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm overflow-hidden relative">
-    <div class="flex items-center justify-between p-4 border-b border-slate-100 dark:border-slate-700">
-      <div class="flex items-center gap-3">
-        <Avatar class="h-10 w-10">
-          <AvatarImage src="https://github.com/shadcn.png" />
-          <AvatarFallback>头像</AvatarFallback>
-        </Avatar>
-        <div>
-          <div class="text-base font-medium dark:text-white">我是你的爹✌</div>
-          <div class="text-sm text-gray-500 dark:text-gray-400">2023/05/06</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="p-4 space-y-3">
-      <div class="text-lg font-medium dark:text-white">
-        Lorem ipsum dolor sit amet.
-      </div>
-      <div class="text-gray-600 dark:text-gray-300">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum
-        animi magni neque quod suscipit, ipsa dolores nihil sapiente
-        impedit voluptatem optio in? Et voluptatem debitis tenetur iste
-        ab sit rem.
-      </div>
-    </div>
-
     <div
-      class="grid gap-2 px-2 py-2"
-      :class="[
-        imgList.length <= 2 ? 'grid-cols-2 pr-[20%]' : '',
-        imgList.length === 3 ? 'grid-cols-3' : '',
-        imgList.length === 4 ? 'grid-cols-2 pr-[20%]' : '',
-        imgList.length > 5 ? 'grid-cols-3' : '',
-      ]"
+        class="bg-white dark:bg-slate-800 rounded-xl shadow-sm overflow-hidden relative"
     >
-      <el-image
-        v-for="img in imgList"
-        :key="img"
-        :src="img"
-        :preview-src-list="imgList"
-        fit="cover"
-        class="w-full h-full bg-white dark:bg-slate-700 border border-solid border-gray-100 dark:border-slate-600 rounded-md aspect-[1/0.8]"
-      />
-    </div>
+        <div
+            class="flex items-center justify-between p-4 border-b border-slate-100 dark:border-slate-700"
+        >
+            <div class="flex items-center gap-3">
+                <Avatar class="h-10 w-10">
+                    <AvatarImage :src="props.post!.avatar" />
+                    <AvatarFallback>头像</AvatarFallback>
+                </Avatar>
+                <div>
+                    <div class="text-base font-medium dark:text-white">
+                        {{ props.post!.username }}
+                    </div>
+                    <div class="text-sm text-gray-500 dark:text-gray-400">
+                        {{ props.post!.createTime }}
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <div class="flex items-center justify-evenly py-3 border-t border-slate-100 dark:border-slate-700">
-      <button class="flex items-center gap-2 px-4 py-2 rounded-full hover:bg-slate-50 dark:hover:bg-slate-700">
-        <Icon icon="ri:thumb-up-line" class="w-5 h-5 text-gray-500 dark:text-gray-400" />
-        <span class="text-sm text-gray-600 dark:text-gray-300">点赞</span>
-      </button>
-      <button @click="commentArea.toggleComments()"  class="flex items-center gap-2 px-4 py-2 rounded-full hover:bg-slate-50 dark:hover:bg-slate-700">
-        <Icon icon="mdi:comment-outline" class="w-5 h-5 text-gray-500 dark:text-gray-400" />
-        <span class="text-sm text-gray-600 dark:text-gray-300">评论</span>
-      </button>
+        <div class="p-4 space-y-3">
+            <div class="text-gray-600 dark:text-gray-300">
+                {{ props.post!.content }}
+            </div>
+        </div>
+
+        <div
+            class="grid gap-2 px-2 py-2"
+            :class="[
+                props.post!.images?.length <= 2 ? 'grid-cols-2 pr-[20%]' : '',
+                props.post!.images?.length === 3 ? 'grid-cols-3' : '',
+                props.post!.images?.length === 4 ? 'grid-cols-2 pr-[20%]' : '',
+                props.post!.images?.length > 5 ? 'grid-cols-3' : '',
+            ]"
+        >
+            <el-image
+                v-for="img in props.post?.images"
+                :key="img"
+                :src="img"
+                :preview-src-list="props.post?.images"
+                fit="cover"
+                class="w-full h-full bg-white dark:bg-slate-700 border border-solid border-gray-100 dark:border-slate-600 rounded-md aspect-[1/0.8]"
+            />
+        </div>
+
+        <div
+            class="flex items-center justify-evenly py-3 border-t border-slate-100 dark:border-slate-700"
+        >
+            <Button
+                @click="toggleLike"
+                variant="ghost"
+                class="flex items-center gap-2 px-4 py-2 rounded-full hover:bg-slate-50 dark:hover:bg-slate-700"
+            >
+                <Icon
+                    v-if="!props.post?.liked"
+                    icon="ri:thumb-up-line"
+                    class="w-5 h-5 text-gray-500 dark:text-gray-400"
+                />
+                <Icon
+                    v-else
+                    icon="ri:thumb-up-fill"
+                    class="w-5 h-5 text-gray-500 dark:text-gray-400"
+                />
+                <span class="text-sm text-gray-600 dark:text-gray-300"
+                    >点赞({{ props.post?.likeNum }})</span
+                >
+            </Button>
+            <Button
+                @click="commentArea.toggleComments()"
+                variant="ghost"
+                class="flex items-center gap-2 px-4 py-2 rounded-full hover:bg-slate-50 dark:hover:bg-slate-700"
+            >
+                <Icon
+                    icon="mdi:comment-outline"
+                    class="w-5 h-5 text-gray-500 dark:text-gray-400"
+                />
+                <span class="text-sm text-gray-600 dark:text-gray-300"
+                    >评论</span
+                >
+            </Button>
+        </div>
+        <CommentArea :id="props.post!.id" ref="commentArea" />
     </div>
-    <CommentArea ref="commentArea"/>
-  </div>
 </template>
