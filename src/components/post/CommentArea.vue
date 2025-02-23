@@ -40,6 +40,7 @@ const submitComment = () => {
         postId: props.id,
         content: content.value,
     }).then((res: any) => {
+        console.log("Comment submitted successfully:", res);    
         content.value = "";
         getComment()
     }).catch((error:any) => {
