@@ -4,10 +4,12 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Icon } from "@iconify/vue/dist/iconify.js";
 import Button from "../ui/button/Button.vue";
 
-import { PropType } from "vue";
+import { onMounted, PropType } from "vue";
 import { ref } from "vue";
 import api from "@/utils/api.js"
+import formatDate from "@/utils/timeUtils.js"
 
+const waitLike = ref(false)
 const commentArea = ref();
 const props = defineProps({
     post: {
@@ -27,7 +29,13 @@ const props = defineProps({
     },
 });
 
+onMounted(() => {
+    props.post!.createTime = formatDate(props.post!.createTime)
+})
+
 const toggleLike = () => {
+    if(waitLike.value) return
+    waitLike.value = true
     props.post!.liked = !props.post!.liked
     if(props.post!.liked) {
       api.put(`/user/post/like?id=${props.post?.id}`).then((res:any)=>{
@@ -35,6 +43,8 @@ const toggleLike = () => {
             console.log(res)
             props.post!.likeNum += 1
           }
+      }).finally(()=>{
+          waitLike.value = false
       })
     }else {
       api.put(`/user/post/cancelLike?id=${props.post?.id}`,{
@@ -44,6 +54,8 @@ const toggleLike = () => {
             console.log(res)
             props.post!.likeNum -= 1
           }
+      }).finally(()=>{
+          waitLike.value = false
       })
     }
 }

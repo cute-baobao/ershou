@@ -55,6 +55,9 @@ const router = createRouter({
             path: '/more',
             //路由组件
             component: () => import('../pages/more.vue'),
+            meta:{
+                KeepAlive: true
+            }
         },
         {
             //路径

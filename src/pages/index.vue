@@ -98,9 +98,9 @@ import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router';
 import { info } from "@/utils/message"
 import { Icon } from '@iconify/vue/dist/iconify.js';
+
 //页面加载
 const dataIsLoading = ref(false)
-
 //路由管理
 const router = useRouter()
 

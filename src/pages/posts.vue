@@ -20,20 +20,19 @@ const record = ref({
 
 onMounted(async () => {
   await getPost()
-  console.log("我是同步的")
 })
 
 const getPost = async () => {
   isloading.value = true
-  await api.get('/user/post/page', {
-    params: {
+  await api.post('/user/post/page', {
       page: page.value,
       pageSize: pageSize.value,
       loginUserId:user.id,
-    }
+      status:2
   }).then((res) => {
     record.value.total = res.data.total
-    record.value.records.push(...res.data.records)
+    if(res.data.records)
+      record.value.records.push(...res.data.records)
     console.log(record.value)
   }).finally(() => {
     isloading.value = false

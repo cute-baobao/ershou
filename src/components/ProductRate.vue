@@ -110,6 +110,7 @@ const getComment = () => {
             status:2
         }
     }).then(res=>{
+      console.log(res.data)
       recentReviews.value = res.data
       console.log(res.data)
     }).finally(()=>{
