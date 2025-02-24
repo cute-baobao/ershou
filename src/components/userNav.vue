@@ -35,7 +35,11 @@
                 </DropdownMenuItem>
                 <DropdownMenuItem @click="router.push('/chat')">
                     <MessageCircle class="mr-2 h-4 w-4" />
-                    消息
+                    聊天
+                </DropdownMenuItem>
+                <DropdownMenuItem @click="router.push('/notice')">
+                    <Bell class="mr-2 h-4 w-4" />
+                    通知
                 </DropdownMenuItem>
                 <DropdownMenuItem @click="router.push('/orderCenter')">
                     <ShoppingBag class="mr-2 h-4 w-4" />
@@ -99,7 +103,8 @@ import {
     Gift,
     Package,
     LogOut,
-    LogIn
+    LogIn,
+    Bell,
 } from 'lucide-vue-next'
 
 import { useUser, useToken } from '@/utils/pinia'

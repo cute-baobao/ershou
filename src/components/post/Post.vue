@@ -6,10 +6,13 @@ import Button from "../ui/button/Button.vue";
 
 import { onMounted, PropType } from "vue";
 import { ref } from "vue";
-import api from "@/utils/api.js"
-import formatDate from "@/utils/timeUtils.js"
+import api from "@/utils/api.js";
+import formatDate from "@/utils/timeUtils.js";
+import debounce from "@/utils/debounce.ts";
+import { useUser } from "@/utils/pinia/index.js"
 
-const waitLike = ref(false)
+const userId = useUser().getUser().id;
+const emits = defineEmits(["delPost"]);
 const commentArea = ref();
 const props = defineProps({
     post: {
@@ -25,48 +28,56 @@ const props = defineProps({
             username: string;
             canBeDeleted: boolean;
         }>,
-        require:true
+        require: true,
     },
 });
 
 onMounted(() => {
-    props.post!.createTime = formatDate(props.post!.createTime)
-})
+    props.post!.createTime = formatDate(props.post!.createTime);
+    console.log(props.post?.userId, userId)
+});
 
 const toggleLike = () => {
-    if(waitLike.value) return
-    waitLike.value = true
-    props.post!.liked = !props.post!.liked
-    if(props.post!.liked) {
-      api.put(`/user/post/like?id=${props.post?.id}`).then((res:any)=>{
-          if(res.code === 1) {
-            console.log(res)
-            props.post!.likeNum += 1
-          }
-      }).finally(()=>{
-          waitLike.value = false
-      })
-    }else {
-      api.put(`/user/post/cancelLike?id=${props.post?.id}`,{
-        id:props.post!.id
-      }).then((res:any)=>{
-          if(res.code === 1) {
-            console.log(res)
-            props.post!.likeNum -= 1
-          }
-      }).finally(()=>{
-          waitLike.value = false
-      })
+    props.post!.liked = !props.post!.liked;
+    if (props.post!.liked) {
+        api.put(`/user/post/like?id=${props.post?.id}`).then((res: any) => {
+            if (res.code === 1) {
+                console.log(res);
+                props.post!.likeNum += 1;
+            }
+        });
+    } else {
+        api.put(`/user/post/cancelLike?id=${props.post?.id}`, {
+            id: props.post!.id,
+        }).then((res: any) => {
+            if (res.code === 1) {
+                console.log(res);
+                props.post!.likeNum -= 1;
+            }
+        });
     }
-}
+};
+
+const debounceToggleLike = debounce(toggleLike, 1000);
+
+const delPost = () => {
+    api.delete(`/user/post/delete?id=${props.post?.id}`).then((res: any) => {
+        if (res.code === 1) {
+            console.log(res);
+            emits("delPost",props.post?.id);
+        }
+    });
+};
+
+const debounceDelPost = debounce(delPost, 1000);
 </script>
 
 <template>
     <div
-        class="bg-white dark:bg-slate-800 rounded-xl shadow-sm overflow-hidden relative"
+        class="bg-white dark:bg-slate-800 rounded-xl shadow-sm overflow-hidden relative space-y-2"
     >
         <div
-            class="flex items-center justify-between p-4 border-b border-slate-100 dark:border-slate-700"
+            class="flex items-center justify-between p-2 border-b border-solid border-slate-100 dark:border-slate-700"
         >
             <div class="flex items-center gap-3">
                 <Avatar class="h-10 w-10">
@@ -82,16 +93,25 @@ const toggleLike = () => {
                     </div>
                 </div>
             </div>
+            <div v-if = "props.post?.userId === userId">
+                <button
+                    @click="debounceDelPost"
+                    v-if="props.post?.canBeDeleted"
+                    class="flex items-center gap-1 hover:text-blue-500 dark:hover:text-blue-400"
+                >
+                    <Icon class="size-4" icon="mdi:bin-outline" />
+                </button>
+            </div>
         </div>
 
-        <div class="p-4 space-y-3">
+        <div class="px-4">
             <div class="text-gray-600 dark:text-gray-300">
                 {{ props.post!.content }}
             </div>
         </div>
 
         <div
-            class="grid gap-2 px-2 py-2"
+            class="grid gap-2 px-4"
             :class="[
                 props.post!.images?.length <= 2 ? 'grid-cols-2 pr-[20%]' : '',
                 props.post!.images?.length === 3 ? 'grid-cols-3' : '',
@@ -110,10 +130,10 @@ const toggleLike = () => {
         </div>
 
         <div
-            class="flex items-center justify-evenly py-3 border-t border-slate-100 dark:border-slate-700"
+            class="flex items-center justify-evenly border-t border-slate-100 dark:border-slate-700"
         >
             <Button
-                @click="toggleLike"
+                @click="debounceToggleLike"
                 variant="ghost"
                 class="flex items-center gap-2 px-4 py-2 rounded-full hover:bg-slate-50 dark:hover:bg-slate-700"
             >

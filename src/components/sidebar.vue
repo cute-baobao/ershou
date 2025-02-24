@@ -7,25 +7,24 @@
         :to="item.to" 
         class="w-10 h-10 flex flex-col justify-center items-center bg-white dark:bg-slate-800 rounded-full shadow-lg transition-all duration-300 hover:bg-green-100 dark:hover:bg-green-900 group"
       >
-        <component 
-          :is="item.icon" 
+        <Icon 
+          :icon="item.icon" 
           class="w-4 h-4 text-green-600 dark:text-green-400 transition-all duration-300 group-hover:scale-110"
         />
         <span class="text-[10px] font-medium text-gray-600 dark:text-gray-300 group-hover:text-green-700 dark:group-hover:text-green-300">{{ item.text }}</span>
       </router-link>
-      <button 
-        @click="goBack" 
-        class="w-10 h-10 flex flex-col justify-center items-center bg-white dark:bg-slate-800 rounded-full shadow-lg transition-all duration-300 hover:bg-green-100 dark:hover:bg-green-900 group"
-      >
-        <ArrowLeft class="w-4 h-4 text-green-600 dark:text-green-400 transition-all duration-300 group-hover:scale-110" />
+      <button @click="goBack" class="w-10 h-10 flex flex-col justify-center items-center bg-white dark:bg-slate-800 rounded-full shadow-lg transition-all duration-300 hover:bg-green-100 dark:hover:bg-green-900 group">
+        <Icon 
+          icon="material-symbols:arrow-back-rounded" 
+          class="w-4 h-4 text-green-600 dark:text-green-400 transition-all duration-300 group-hover:scale-110" 
+        />
         <span class="text-[10px] font-medium text-gray-600 dark:text-gray-300 group-hover:text-green-700 dark:group-hover:text-green-300">返回</span>
       </button>
-      <button 
-        @click="scrollToTop" 
-        class="w-10 h-10 flex flex-col justify-center items-center bg-white dark:bg-slate-800 rounded-full shadow-lg transition-all duration-300 hover:bg-green-100 dark:hover:bg-green-900 group"
-        v-show="showTopButton"
-      >
-        <ArrowUp class="w-4 h-4 text-green-600 dark:text-green-400 transition-all duration-300 group-hover:scale-110" />
+      <button @click="scrollToTop" class="w-10 h-10 flex flex-col justify-center items-center bg-white dark:bg-slate-800 rounded-full shadow-lg transition-all duration-300 hover:bg-green-100 dark:hover:bg-green-900 group" v-show="showTopButton">
+        <Icon 
+          icon="material-symbols:arrow-upward-rounded" 
+          class="w-4 h-4 text-green-600 dark:text-green-400 transition-all duration-300 group-hover:scale-110" 
+        />
         <span class="text-[10px] font-medium text-gray-600 dark:text-gray-300 group-hover:text-green-700 dark:group-hover:text-green-300">顶部</span>
       </button>
     </div>
@@ -34,14 +33,15 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
-import { House, Plus, MessageCircleMore, ArrowUp,ArrowLeft  } from 'lucide-vue-next';
+import { Icon } from '@iconify/vue/dist/iconify.js';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const bar = ref([
-  { icon: House, text: "首页", to: "/index" },
-  { icon: Plus, text: "发布", to: "/write" },
-  { icon: MessageCircleMore, text: "消息", to: "/chat" }
+  { icon: 'material-symbols:home', text: "首页", to: "/index" },
+  { icon: 'material-symbols:add-box', text: "发布", to: "/write" },
+  { icon: 'material-symbols:chat', text: "聊天", to: "/chat" },
+  { icon: 'material-symbols:notifications', text: "通知", to: "/notice" }
 ]);
 
 const showTopButton = ref(false);

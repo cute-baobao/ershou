@@ -128,6 +128,10 @@ const router = createRouter({
         {
             path: '/posts',
             component: () => import('../pages/posts.vue'),
+        },
+        {
+            path: '/notice',
+            component: () => import('../pages/notification.vue'),
         }
     ]
 })
@@ -139,7 +143,7 @@ const router = createRouter({
  * @param next 跳转函数
  */
 router.beforeEach((to, from, next) => {
-    const pathUrl = ['/about', '/login', '/detail', '/more', '/userDetail', '/pointStore', '/carbonComputed'];
+    const pathUrl = ['/index','/about', '/login', '/detail', '/more', '/userDetail', '/pointStore', '/carbonComputed'];
     const token = useToken().getToken();
     const routeExists = router.getRoutes().some(route => {
         const pattern = new RegExp(`^${route.path.replace(/:\w+/g, '[^/]+')}$`);
