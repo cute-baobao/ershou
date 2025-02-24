@@ -34,7 +34,6 @@ const props = defineProps({
 
 onMounted(() => {
     props.post!.createTime = formatDate(props.post!.createTime);
-    console.log(props.post?.userId, userId)
 });
 
 const toggleLike = () => {
