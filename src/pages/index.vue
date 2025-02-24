@@ -98,6 +98,7 @@ import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router';
 import { info } from "@/utils/message"
 import { Icon } from '@iconify/vue/dist/iconify.js';
+import { success } from "@/utils/message";
 
 //页面加载
 const dataIsLoading = ref(false)
@@ -122,6 +123,7 @@ const products = ref({
 onMounted(async () => {
   loadData()
   getCategory()
+  getUnreadNotice()
 })
 
 const loadData = async () => {
@@ -190,4 +192,13 @@ const search = () => {
   })
 }
 
+const getUnreadNotice = () => {
+    api.get("/user/notice/getUnreadNum").then( res=> {
+        if(res.data > 0) {
+          success("您有" + res.data + "条未读通知");
+        }
+    }).catch( err => {
+        console.log(err);
+    })
+}
 </script>

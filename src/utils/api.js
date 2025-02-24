@@ -31,14 +31,15 @@ api.interceptors.response.use(
   },
   (error) => {
     let message = "";
-    if( error.response.data.msg !== null ) {
+    if( error.response.data.msg ) {
       if(error.response.status === 401) {
         token.setToken('')
       }
-      warning(error.response.data.msg)
+      if(!error.response.config.url.includes('notice'))
+        warning(error.response.data.msg)
       return
     }
-    else if (error && error.response) {
+    else{
       switch (error.response.status) {
         case 302:
           message = "接口重定向了！";

@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { onMounted, PropType, ref } from "vue";
+import { onMounted, PropType } from "vue";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Icon } from "@iconify/vue/dist/iconify.js";
 import api from "@/utils/api.js"
 import formatDate from "@/utils/timeUtils.js";
+import debounce from "@/utils/debounce.ts";
 
 const emits = defineEmits(['deleteComment'])
 // 正在处理点赞事件
-const waitLike = ref(false)
 const props = defineProps({
     comment: {
         type: Object as PropType<{
@@ -30,8 +30,7 @@ onMounted(() => {
 })
 
 const toggleLike = () => {
-    if (waitLike.value) return
-    waitLike.value = true
+   
     props.comment!.liked = !props.comment!.liked
     if (props.comment!.liked) {
         api.put(`/user/postComments/like?id=${props.comment?.id}`).then((res: any) => {
@@ -39,8 +38,6 @@ const toggleLike = () => {
                 console.log(res)
                 props.comment!.likeNum += 1
             }
-        }).finally(() => {
-            waitLike.value = false
         })
     } else {
         api.put(`/user/postComments/cancelLike?id=${props.comment?.id}`, {
@@ -50,14 +47,13 @@ const toggleLike = () => {
                 console.log(res)
                 props.comment!.likeNum -= 1
             }
-        }).finally(() => {
-            waitLike.value = false
         })
     }
 }
 
+
+
 const deleteComment = () => {
-    waitLike.value = true
     api.delete(`/user/postComments/delete?id=${props.comment?.id}`).then((res: any) => {
         if (res.code === 1) {
             console.log(res)
@@ -65,6 +61,9 @@ const deleteComment = () => {
         }
     })
 }
+
+const debounceToggleLike = debounce(toggleLike, 500)
+const debounceDeleteComment = debounce(deleteComment, 500)
 </script>
 
 <template>
@@ -85,17 +84,17 @@ const deleteComment = () => {
                     {{ props.comment!.content }}
                 </p>
                 <div class="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
-                    <button @click="toggleLike" v-if="!props.comment!.liked"
+                    <button @click="debounceToggleLike" v-if="!props.comment!.liked"
                         class="flex items-center gap-1 hover:text-blue-500 dark:hover:text-blue-400">
                         <Icon icon="ri:thumb-up-line" />
                         <span>点赞 ({{ props.comment!.likeNum }})</span>
                     </button>
-                    <button @click="toggleLike" v-else
+                    <button @click="debounceToggleLike" v-else
                         class="flex items-center gap-1 hover:text-blue-500 dark:hover:text-blue-400">
                         <Icon icon="ri:thumb-up-fill" />
                         <span>点赞 ({{ props.comment!.likeNum }})</span>
                     </button>
-                    <button @click="deleteComment" v-if="props.comment?.canBeDeleted"
+                    <button @click="debounceDeleteComment" v-if="props.comment?.canBeDeleted"
                         class="flex items-center gap-1 hover:text-blue-500 dark:hover:text-blue-400">
                         <Icon class="size-4" icon="mdi:bin-outline" />
                     </button>

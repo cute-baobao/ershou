@@ -35,18 +35,18 @@ const addPost = async () => {
         content: content.value,
         urls: img ? imgUrl.value : [],
     })
-        .then((res) => {
-            if (res.code === 1) {
-                content.value = "";
-                imgUrl.value = [];
-                imgList.value = [];
-                fileList.value = [];
-                emits("addPost");
-            }
-        })
-        .finally(() => {
-            isloading.value = false;
-        });
+    .then((res) => {
+        if (res.code === 1) {
+            content.value = "";
+            imgUrl.value = [];
+            imgList.value = [];
+            fileList.value = [];
+            emits("addPost");
+        }
+    })
+    .finally(() => {
+        isloading.value = false;
+    });
 };
 
 const handlerUpload = async (event) => {
