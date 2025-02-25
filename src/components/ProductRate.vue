@@ -136,7 +136,7 @@ const like = (id,index) => {
 const cancelLike = (id,index) => {
   recentReviews.value.records[index].liked = false
   api({
-    url:"/user/productComments/cancel",
+    url:"/user/productComments/cancelLike",
     method:"PUT",
     params:{
       id:id
