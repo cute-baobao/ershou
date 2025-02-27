@@ -19,7 +19,7 @@
                 >
             </router-link>
             <button
-                @click="router.push('/notice')"
+                @click="goNotice"
                 class="w-10 h-10 flex flex-col relative justify-center items-center bg-white dark:bg-slate-800 rounded-full shadow-lg transition-all duration-300 hover:bg-green-100 dark:hover:bg-green-900 group"
             >
                 <span
@@ -70,7 +70,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
 import { Icon } from "@iconify/vue/dist/iconify.js";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import api from "@/utils/api";
 
 const unread = ref(0);
@@ -106,6 +106,11 @@ const getUnreadNotice = () => {
         .catch((err) => {
             console.log(err);
         });
+};
+
+const goNotice = () => {
+    unread.value = 0;
+    router.push("/notice");
 };
 
 onMounted(() => {

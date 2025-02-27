@@ -21,7 +21,14 @@
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-                <DropdownMenuItem @click="router.push({ path: '/userDetail', query: { id: user.id } })">
+                <DropdownMenuItem
+                    @click="
+                        router.push({
+                            path: '/userDetail',
+                            query: { id: user.id },
+                        })
+                    "
+                >
                     <User class="mr-2 h-4 w-4" />
                     主页
                 </DropdownMenuItem>
@@ -36,10 +43,6 @@
                 <DropdownMenuItem @click="router.push('/chat')">
                     <MessageCircle class="mr-2 h-4 w-4" />
                     聊天
-                </DropdownMenuItem>
-                <DropdownMenuItem @click="router.push('/notice')">
-                    <Bell class="mr-2 h-4 w-4" />
-                    通知
                 </DropdownMenuItem>
                 <DropdownMenuItem @click="router.push('/orderCenter')">
                     <ShoppingBag class="mr-2 h-4 w-4" />
@@ -69,20 +72,19 @@
             </DropdownMenuItem>
         </DropdownMenuContent>
     </DropdownMenu>
-    <button v-else @click="logIn"
-        class="bg-white text-green-600 px-4 py-2 rounded-full hover:bg-green-100 transition duration-300 flex items-center">
+    <button
+        v-else
+        @click="logIn"
+        class="bg-white text-green-600 px-4 py-2 rounded-full hover:bg-green-100 transition duration-300 flex items-center"
+    >
         <LogIn class="mr-1 h-4 w-4" />
         登录
     </button>
 </template>
 
 <script setup>
-import {
-    Avatar,
-    AvatarFallback,
-    AvatarImage,
-} from '@/components/ui/avatar'
-import { Button } from '@/components/ui/button'
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -92,7 +94,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuShortcut,
     DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+} from "@/components/ui/dropdown-menu";
 import {
     User,
     Settings,
@@ -104,19 +106,18 @@ import {
     Package,
     LogOut,
     LogIn,
-    Bell,
-} from 'lucide-vue-next'
+} from "lucide-vue-next";
 
-import { useUser, useToken } from '@/utils/pinia'
-import { useRouter } from 'vue-router'
-const router = useRouter()
-const user = useUser().getUser()
-const token = useToken()
+import { useUser, useToken } from "@/utils/pinia";
+import { useRouter } from "vue-router";
+const router = useRouter();
+const user = useUser().getUser();
+const token = useToken();
 const logOut = () => {
-    token.setToken('')
-}
+    token.setToken("");
+};
 
 const logIn = () => {
-    router.push('/login')
-}
+    router.push("/login");
+};
 </script>
