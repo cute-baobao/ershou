@@ -5,11 +5,11 @@
             <Header v-if="route.path != '/login'" />
             <router-view v-slot="{ Component }">
                 <keep-alive :include="['more']">
-                    <component :is="Component"  :key="route.fullPath" />
+                    <component :is="Component" :key="route.fullPath" />
                 </keep-alive>
             </router-view>
         </div>
-        <sidebar />
+        <sidebar v-if="route.path != '/'" />
     </div>
 </template>
 <script setup>
@@ -40,7 +40,7 @@ onMounted(() => {
     document.title = "小碳二手交易平台";
     ws = new WebSocket(import.meta.env.VITE_APP_WS + `/chat/${fromUser}`);
     ws.onmessage = onmessage;
-    console.log(route.fullPath)
+    console.log(route.fullPath);
 });
 
 setInterval(() => {

@@ -2,10 +2,9 @@ import axios from "axios";
 import { useToken } from "./pinia";
 import { warning } from "./message";
 
-const token = useToken()
 // 创建 axios 请求实例
 const api = axios.create({
-  baseURL:import.meta.env.VITE_APP_BASE_URL+'/api',
+  baseURL: import.meta.env.VITE_APP_BASE_URL + '/api',
   timeout: 100000, // 请求超时设置
   withCredentials: false, // 跨域请求是否需要携带 cookie
 });
@@ -14,6 +13,7 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     // 如果开启 token 认证
+    const token = useToken();
     config.headers["token"] = useToken().getToken(); // 请求头携带 token
     return config;
   },
@@ -31,15 +31,15 @@ api.interceptors.response.use(
   },
   (error) => {
     let message = "";
-    if( error.response.data.msg ) {
-      if(error.response.status === 401) {
+    if (error.response.data.msg) {
+      if (error.response.status === 401) {
         token.setToken('')
       }
-      if(!error.response.config.url.includes('notice'))
+      if (!error.response.config.url.includes('notice'))
         warning(error.response.data.msg)
       return
     }
-    else{
+    else {
       switch (error.response.status) {
         case 302:
           message = "接口重定向了！";
