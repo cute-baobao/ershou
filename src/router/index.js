@@ -1,5 +1,4 @@
 //创建路由
-import { KeepAlive } from "vue";
 import { createRouter, createWebHistory } from "vue-router";
 import { useToken } from "../utils/pinia";
 const router = createRouter({
@@ -55,7 +54,7 @@ const router = createRouter({
             path: '/more',
             //路由组件
             component: () => import('../pages/more.vue'),
-            meta:{
+            meta: {
                 KeepAlive: true
             }
         },
@@ -132,7 +131,7 @@ const router = createRouter({
         {
             path: '/notice',
             component: () => import('../pages/notification.vue'),
-        }
+        },
     ]
 })
 
@@ -143,7 +142,7 @@ const router = createRouter({
  * @param next 跳转函数
  */
 router.beforeEach((to, from, next) => {
-    const pathUrl = ['/index','/about', '/login', '/detail', '/more', '/userDetail', '/pointStore', '/carbonComputed'];
+    const pathUrl = ['/index', '/about', '/login', '/detail', '/more', '/userDetail', '/pointStore', '/carbonComputed'];
     const token = useToken().getToken();
     const routeExists = router.getRoutes().some(route => {
         const pattern = new RegExp(`^${route.path.replace(/:\w+/g, '[^/]+')}$`);
@@ -151,7 +150,7 @@ router.beforeEach((to, from, next) => {
     });
 
     if (!routeExists) {
-        // 路由存在，继续导航
+        // 路由不存在，导航到404页面
         next({ path: '/404' });
         return
     }
