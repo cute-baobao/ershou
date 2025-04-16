@@ -286,6 +286,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { useUser } from '@/utils/pinia';
 import { success, info, warning } from '@/utils/message';
 import { Loader2 } from 'lucide-vue-next';
+import { number } from 'echarts';
 
 //页面加载
 const dataIsLoading = ref(false);
@@ -300,7 +301,10 @@ const orderNote = ref(null);
 const addresses = ref([]);
 const id = ref();
 const user = useUser();
-const orderId = ref(null);
+const order = ref({
+	id: 0,
+	number: 0,
+});
 const product = ref({
 	categoryId: Number,
 	price: Number,
@@ -377,7 +381,7 @@ const orderSubmit = async () => {
 	})
 		.then((res) => {
 			if (res.code === 1) {
-				orderId.value = res.data;
+				order.value = res.data;
 				openDialog.value = true;
 			}
 		})
@@ -386,32 +390,17 @@ const orderSubmit = async () => {
 		});
 };
 const pay = async () => {
-	// if (orderId.value === null)
-	//   return
-	// isloading.value = true
-	// await api({
-	//   url: "/user/order/pay",
-	//   method: "PUT",
-	//   params: {
-	//     id: orderId.value
-	//   }
-	// }).then(res => {
-	//   if (res.code === 1) {
-	//     success('支付成功')
-	//     router.push('/success')
-	//   }
-	// }).finally(() => {
-	//   isloading.value = false
-	// })
+	console.log(order.value, product.value);
 	const res = confirm('即将跳转到支付页面');
 	res
 		? window.open(
 				`${import.meta.env.VITE_APP_URL}/alipay/pay?subject=${
 					product.value.title
-				}&traceNo=${orderId.value}&totalAmount=${product.value.price}`,
+				}&traceNo=${order.value.number}&totalAmount=${product.value.price}`,
 				'_blank'
 		  )
-		: warning('取消支付');
+		: info('支付已取消,订单将保留15分钟');
+	router.push({ path: '/orderCenter' });
 };
 
 watch(
